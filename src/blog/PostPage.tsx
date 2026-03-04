@@ -10,7 +10,7 @@ function PostPage() {
   return (
     <div className="flex flex-col gap-3">
       <header
-        className="flex justify-center items-center flex-wrap min-h-80 bg-cover bg-center"
+        className="flex justify-center items-center flex-wrap py-38 bg-cover bg-center"
         style={{ backgroundImage: `url(${featured_image})` }}
       >
         <h2 className="text-2xl font-bold">{title}</h2>
