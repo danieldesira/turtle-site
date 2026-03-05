@@ -43,3 +43,18 @@ interface Comment {
   content?: string;
   author?: Author;
 }
+
+export interface PostCommentPayload {
+  author?: number;
+  author_email?: string;
+  author_ip?: string;
+  author_name?: string;
+  author_url?: string;
+  author_user_agent?: string;
+  content?: string;
+  date?: string;
+  date_gmt?: string;
+  parent?: number;
+  post?: number;
+  status?: string;
+}
