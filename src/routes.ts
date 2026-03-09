@@ -6,6 +6,7 @@ import { fetchScores } from "./scores/service";
 import ErrorComponent from "./ErrorComponent";
 import Blog from "./blog/Blog";
 import {
+  authenticateWP,
   getPostReplies,
   getPosts,
   getSinglePost,
@@ -69,6 +70,14 @@ export const routes = createBrowserRouter([
             author_email: formData.get("authorEmail")?.toString(),
             content: formData.get("content")?.toString(),
           });
+        },
+      },
+      {
+        path: "/wp-oauth-callback",
+        loader: async ({ request }) => {
+          const url = new URL(request.url);
+          const oauthCode = url.searchParams.get("code");
+          await authenticateWP(oauthCode!);
         },
       },
     ],

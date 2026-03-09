@@ -1,4 +1,7 @@
-import { axiosWordpressApiInstance } from "../axiosInstance";
+import {
+  axiosWordpressApiInstance,
+  axiosWordpressOauthBEInstance,
+} from "../axiosInstance";
 import type { PostCommentPayload } from "./interfaces";
 
 export const getPosts = async () => {
@@ -24,5 +27,12 @@ export const postNewReply = async (
     `/posts/${postId}/replies/new`,
     payload,
   );
+  return res.data;
+};
+
+export const authenticateWP = async (oauthCode: string) => {
+  const res = await axiosWordpressOauthBEInstance.post("/token", {
+    code: oauthCode,
+  });
   return res.data;
 };
