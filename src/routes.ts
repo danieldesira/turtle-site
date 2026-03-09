@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, redirect } from "react-router";
 import Layout from "./layout/Layout";
 import Homepage from "./Homepage";
 import Scores from "./scores/Scores";
@@ -13,6 +13,7 @@ import {
   postNewReply,
 } from "./blog/services";
 import PostPage from "./blog/PostPage";
+import type { WPComToken } from "./blog/interfaces";
 
 export const routes = createBrowserRouter([
   {
@@ -77,8 +78,20 @@ export const routes = createBrowserRouter([
         loader: async ({ request }) => {
           const url = new URL(request.url);
           const oauthCode = url.searchParams.get("code");
-          await authenticateWP(oauthCode!);
+          const postId = url.searchParams.get("post_id");
+          if (oauthCode) {
+            try {
+              const { access_token } = (await authenticateWP(
+                oauthCode!,
+              )) as WPComToken;
+              sessionStorage.setItem("token", access_token!);
+            } catch (error) {
+              console.error(error);
+            }
+          }
+          return redirect(`/blog/${postId}`);
         },
+        element: null,
       },
     ],
   },

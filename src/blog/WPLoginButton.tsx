@@ -1,9 +1,11 @@
 import { FaWordpress } from "react-icons/fa6";
+import { useParams } from "react-router";
 
 function WPLoginButton() {
-  const redirectUrl = encodeURIComponent(
-    `${location.origin}/wp-oauth-callback`,
-  );
+  const { id: postId } = useParams();
+  const redirectUrl =
+    encodeURIComponent(`${location.origin}/wp-oauth-callback`) +
+    `?post_id=${postId}`;
 
   const oauthUrl = `https://public-api.wordpress.com/oauth2/authorize?client_id=${import.meta.env.VITE_APP_WP_COM_CLIENT_ID}&redirect_uri=${redirectUrl}&response_type=code`;
 

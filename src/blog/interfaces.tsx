@@ -58,3 +58,11 @@ export interface PostCommentPayload {
   post?: number;
   status?: string;
 }
+
+export interface WPComToken {
+  access_token?: string;
+  token_type?: "bearer";
+  blog_id?: number;
+  blog_url?: string;
+  scope?: string;
+}
