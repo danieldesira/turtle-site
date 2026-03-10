@@ -55,7 +55,7 @@ export interface PostCommentPayload {
   date?: string;
   date_gmt?: string;
   parent?: number;
-  post?: number;
+  post_id?: number;
   status?: string;
 }
 
@@ -65,4 +65,10 @@ export interface WPComToken {
   blog_id?: number;
   blog_url?: string;
   scope?: string;
+}
+
+export interface WPComUser {
+  ID?: number;
+  username?: string;
+  avatar_URL?: string;
 }

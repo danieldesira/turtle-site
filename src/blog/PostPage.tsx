@@ -1,13 +1,14 @@
 import { useLoaderData } from "react-router";
-import type { GetPostRepliesResponse, Post } from "./interfaces";
+import type { GetPostRepliesResponse, Post, WPComUser } from "./interfaces";
 import SafeRawHtmlWrapper from "./SafeRawHtml";
 import { formatDate } from "./utils";
 import CommentSection from "./CommentSection";
 
 function PostPage() {
-  const { post, replies } = useLoaderData() as {
+  const { post, replies, wpUser } = useLoaderData() as {
     post: Post;
     replies: GetPostRepliesResponse;
+    wpUser?: WPComUser;
   };
 
   return (
@@ -23,7 +24,7 @@ function PostPage() {
         <span className="font-light text-lg">{post.author?.nice_name}</span>
         <span className="font-light text-sm">{formatDate(post.modified!)}</span>
       </article>
-      <CommentSection replies={replies} />
+      <CommentSection replies={replies} user={wpUser!} />
     </div>
   );
 }

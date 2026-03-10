@@ -7,10 +7,12 @@ import ErrorComponent from "./ErrorComponent";
 import Blog from "./blog/Blog";
 import {
   authenticateWP,
+  getCurrentWpcomUser,
   getPostReplies,
   getPosts,
   getSinglePost,
   postNewReply,
+  updateReply,
 } from "./blog/services";
 import PostPage from "./blog/PostPage";
 import type { WPComToken } from "./blog/interfaces";
@@ -56,24 +58,32 @@ export const routes = createBrowserRouter([
         loader: async ({ params }) => {
           sessionStorage.setItem("postId", params.id!);
           const postId = parseInt(params.id!);
-          const [post, replies] = await Promise.all([
+          const [post, replies, wpUser] = await Promise.all([
             getSinglePost(postId),
             getPostReplies(postId),
+            store.getState().wpcomToken.value ? getCurrentWpcomUser() : undefined,
           ]);
           return {
             post,
             replies,
+            wpUser,
           };
         },
         ErrorBoundary: ErrorComponent,
         action: async ({ request, params }) => {
           const postId = parseInt(params.id!);
           const formData = await request.formData();
-          await postNewReply(postId, {
-            author_name: formData.get("authorName")?.toString(),
-            author_email: formData.get("authorEmail")?.toString(),
-            content: formData.get("content")?.toString(),
-          });
+          const commentId = formData.get("commentId");
+          const content = formData.get("content")?.toString();
+          if (commentId) {
+            await updateReply(parseInt(commentId.toString()), {
+              content,
+            });
+          } else {
+            await postNewReply(postId, {
+              content,
+            });
+          }
         },
       },
       {

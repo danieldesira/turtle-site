@@ -1,8 +1,10 @@
+import axios from "axios";
 import {
   axiosWordpressApiInstance,
   axiosWordpressOauthBEInstance,
 } from "../axiosInstance";
 import type { PostCommentPayload } from "./interfaces";
+import { store } from "../store";
 
 export const getPosts = async () => {
   const res = await axiosWordpressApiInstance.get("/posts");
@@ -19,6 +21,20 @@ export const getPostReplies = async (postId: number) => {
   return res.data;
 };
 
+export const authenticateWP = async (oauthCode: string) => {
+  const res = await axiosWordpressOauthBEInstance.post("/token", {
+    code: oauthCode,
+  });
+  return res.data;
+};
+
+export const getCurrentWpcomUser = async () => {
+  const res = await axios.get("https://public-api.wordpress.com/rest/v1.1/me", {
+    headers: { Authorization: `Bearer ${store.getState().wpcomToken.value}` },
+  });
+  return res.data;
+};
+
 export const postNewReply = async (
   postId: number,
   payload: PostCommentPayload,
@@ -30,9 +46,13 @@ export const postNewReply = async (
   return res.data;
 };
 
-export const authenticateWP = async (oauthCode: string) => {
-  const res = await axiosWordpressOauthBEInstance.post("/token", {
-    code: oauthCode,
-  });
+export const updateReply = async (
+  commentId: number,
+  payload: PostCommentPayload,
+) => {
+  const res = await axiosWordpressApiInstance.post(
+    `/comments/${commentId}`,
+    payload,
+  );
   return res.data;
 };
