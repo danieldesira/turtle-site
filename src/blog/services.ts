@@ -56,3 +56,10 @@ export const updateReply = async (
   );
   return res.data;
 };
+
+export const deleteComment = async (commentId: number) => {
+  const res = await axiosWordpressApiInstance.delete(
+    `/comments/${commentId}?force=true`,
+  );
+  return res.data;
+};

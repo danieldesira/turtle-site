@@ -21,7 +21,7 @@ function CommentSection({ replies, user }: Props) {
           {replies.comments?.map(({ ID, author, date, content }, index) => (
             <Comment
               key={ID}
-              id={ID!}
+              avatarUrl={author?.avatar_URL ?? ""}
               authorName={author?.nice_name ?? ""}
               date={date!}
               content={content!}
