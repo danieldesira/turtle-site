@@ -13,6 +13,13 @@ export default defineConfig({
       ),
       cert: fs.readFileSync(path.resolve(__dirname, "certs/localhost+2.pem")),
     },
+    proxy: {
+      "/api": {
+        target: "http://localhost:3000/",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
   plugins: [react(), tailwindcss()],
 });

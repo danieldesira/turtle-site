@@ -22,7 +22,7 @@ export const getPostReplies = async (postId: number) => {
 };
 
 export const authenticateWP = async (oauthCode: string) => {
-  const res = await axiosWordpressOauthBEInstance.post("/token", {
+  const res = await axiosWordpressOauthBEInstance.post("/api/token", {
     code: oauthCode,
   });
   return res.data;
